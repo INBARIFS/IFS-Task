@@ -1,0 +1,78 @@
+﻿@model IFSTask.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<script>
+    $(document).ready(function () {
+
+        $("#sign-in").click(function () {
+
+            $.ajax({
+                type: "POST",
+                url: "Home/Login",
+                data: {
+                    Password: $("#user-input").val()
+                },
+                dataType: 'json',
+                complete: function (result) {
+
+                    if (result.responseJSON == undefined) {
+
+                        window.location = window.location.origin;
+                    }
+                    else if (result.responseJSON.statusCode == 401) {
+
+                        $("#auth-error").css("display", "inline");
+                    }
+                    else if (result.responseJSON.statusCode == 200) {
+
+                        window.location = "Home/Tfa";
+                    }
+                }
+            });
+
+        });
+    });
+</script>
+
+
+<div class="row">
+    <div class="col-md-3">
+
+    </div>
+    <div class="col-md-6 bg-white">
+        <div class="container h-100 d-flex justify-content-center" style="padding-top: 150px">
+            <div class="jumbotron my-auto" style="        background-color: white;
+        border: 1px solid #c7c3c3;
+        box-shadow: 4px 4px #c7c3c3;">
+                @*<h1 class="display-3">Hello, world!</h1>*@
+
+                <h3><b>Welcome to EternalBlue</b></h3>
+                <p>The riddle is to find the correct password</p>
+
+                <form>
+                    <div class="form-group">
+
+                        <label for="exampleInputPassword"><b>Password</b></label>
+                        <input type="text" style="box-shadow: 2px 2px #c7c3c3;" class="form-control" id="user-input" aria-describedby="passwordHelp" placeholder="Password">
+                        <p id="auth-error" class="small" style="color: red;font-style: italic;display:none">Incorrect password</p>
+                        <input id="password" name="password" type="hidden" value="Ymx1ZWIxdWVCbHVl">
+
+                    </div>
+                    <button id="sign-in" type="button" class="btn btn-primary">Sign In</button>
+                    @*<button type="submit" class="btn btn-primary">Sign In</button>*@
+                </form>
+                <small id="emailHelp" class="form-text text-muted">©2021 IFS. All rights reserved.</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+
+    </div>
+</div>
+
+
+
+
+

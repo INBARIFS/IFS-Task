@@ -1,0 +1,87 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IFSTask.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<script>
+    $(document).ready(function () {
+
+        $("#sign-in").click(function () {
+
+            $.ajax({
+                type: "POST",
+                url: "ValidateTfa",
+                data: {
+                    Password: $("#user-input").val()
+                },
+                dataType: 'json',
+                complete: function (result) {
+
+                    if (result.responseJSON == undefined) {
+
+                        window.location = window.location.origin;
+                    }
+                    else if (result.responseJSON.statusCode == 401) {
+
+                        $("#auth-error").css("display", "inline");
+                    }
+                    else if (result.responseJSON.statusCode == 200) {
+
+                        window.location = window.location.origin + "/Task.md";
+                    }
+                }
+            });
+
+        });
+    });
+</script>
+
+
+<div class="row">
+    <div class="col-md-3">
+
+    </div>
+    <div class="col-md-6 bg-white">
+        <div class="container h-100 d-flex justify-content-center" style="padding-top: 32px">
+            <div class="jumbotron my-auto" style="        background-color: white;
+        border: 1px solid #c7c3c3;
+        box-shadow: 4px 4px #c7c3c3;">
+                @*<h1 class="display-3">Hello, world!</h1>*@
+
+                <h3><b>Two step authentication</b></h3>
+                <p style="color: #65c903;">Congrats, you got it!</p>
+                <p>Let's try another one, the answer is inside:</p>
+                <div class="pb-2">
+                    <img src="~/images/bluehint.jpg" style="height: 200px;">
+                </div>
+                <p>
+                    Please insert the second password:
+                </p>
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputPassword"><b>Password</b></label>
+                        <input type="text" style="box-shadow: 2px 2px #c7c3c3;" class="form-control" id="user-input" aria-describedby="passwordHelp" placeholder="Password">
+                        <p id="auth-error" class="small" style="color: red;font-style: italic;display:none">Incorrect password</p>
+                        <input id="password" name="password" type="hidden" value="Ymx1ZWIxdWVCbHVl">
+                    </div>
+                    <button type="button" id="sign-in" class="btn btn-primary">Sign In</button>
+                </form>
+                <small id="emailHelp" class="form-text text-muted">©2021 IFS. All rights reserved.</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+
+    </div>
+</div>
+
+
+
+
+
